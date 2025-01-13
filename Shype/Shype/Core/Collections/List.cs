@@ -1,16 +1,19 @@
 using System.Collections;
+using Shype.Core.Errors;
 
 namespace Shype.Core.Collections;
 
-public record List<T> : IImmutableList<T>
+public record List<T>(IImmutableList<T> Items) : Errorable<List<T>>, IImmutableList<T>
 {
-    private List(IImmutableList<T> items) => Items = items;
-
     public List(params T[] items) : this(items.ToImmutableList()) { }
 
     public T this[int index] => Items[index];
 
-    public IImmutableList<T> Items { get; init; }
+    public IImmutableList<T> Items { get; init; } = Items;
+
+    public virtual bool Equals(List<T>? other) => other is List<T> list && Items.SequenceEqual(list.Items);
+
+    public override int GetHashCode() => Items.GetHashCode();
 
     public int Count => Items.Count;
 

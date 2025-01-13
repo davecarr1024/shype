@@ -1,5 +1,3 @@
-using Shype.Core.Errors;
-
 namespace Shype.Core.Collections;
 
 public abstract record Stream<S, T> : List<T> where S : Stream<S, T>
@@ -12,9 +10,9 @@ public abstract record Stream<S, T> : List<T> where S : Stream<S, T>
         {
             if (!this.Any())
             {
-                throw new Error("getting head from empty stream");
+                throw CreateError("getting head from empty stream");
             }
-            return this.First();
+            return this[0];
         }
     }
 
@@ -24,7 +22,7 @@ public abstract record Stream<S, T> : List<T> where S : Stream<S, T>
         {
             if (!this.Any())
             {
-                throw new Error("getting tail from empty stream");
+                throw CreateError("getting tail from empty stream");
             }
             return this with { Items = Items.Skip(1).ToImmutableList() };
         }

@@ -50,6 +50,6 @@ public class ErrorableTest
     {
         PositiveInt i = new();
         Assert.That(i.SetAndGet(1), Is.EqualTo(1));
-        Assert.Catch<Error>(()=>{i.SetAndGet(-1);});
+        Assert.Catch<Error>(() => { i.SetAndGet(-1); });
     }
 }

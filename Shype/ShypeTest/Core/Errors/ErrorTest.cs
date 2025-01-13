@@ -9,6 +9,7 @@ public class ErrorTest
 #pragma warning disable NUnit2009
         Assert.That(new Error("a"), Is.EqualTo(new Error("a")));
 #pragma warning restore NUnit2009
+        Assert.That(new Error("a"), Is.Not.EqualTo(new Error("b")));
     }
 
 }
