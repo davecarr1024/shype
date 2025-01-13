@@ -2,19 +2,31 @@ namespace Shype.Core.Errors;
 
 public abstract record Errorable<E> where E : Errorable<E>
 {
-    public class Error(Errorable<E> obj, string message = "") : Errors.Error(message)
+    protected class Error(Errorable<E> obj, string message = "") : Errors.Error(message)
     {
         public Errorable<E> Object { get; init; } = obj;
+
+        public override bool Equals(object? obj) => obj is Error error && ReferenceEquals(Object, error.Object) && base.Equals(error);
+
+        public override int GetHashCode() => HashCode.Combine(Object, base.GetHashCode());
     }
 
-    public class UnaryError(Errorable<E> obj, Error child, string message = "") : Error(obj, message)
+    protected class UnaryError(Errorable<E> obj, Error child, string message = "") : Error(obj, message)
     {
         public Error Child { get; init; } = child;
+
+        public override bool Equals(object? obj) => obj is UnaryError error && Child == error.Child && base.Equals(error);
+
+        public override int GetHashCode() => HashCode.Combine(Child, base.GetHashCode());
     }
 
-    public class NaryError(Errorable<E> obj, List<Error> children, string message = "") : Error(obj, message)
+    protected class NaryError(Errorable<E> obj, List<Error> children, string message = "") : Error(obj, message)
     {
         public List<Error> Children { get; init; } = children;
+
+        public override bool Equals(object? obj) => obj is NaryError error && Children.SequenceEqual(error.Children) && base.Equals(error);
+
+        public override int GetHashCode() => HashCode.Combine(Children, base.GetHashCode());
     }
 
     protected Error CreateError(string message = "") => new(this, message);
