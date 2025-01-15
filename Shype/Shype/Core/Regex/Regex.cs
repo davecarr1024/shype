@@ -88,7 +88,7 @@ public abstract record Regex : Errors.Errorable<Regex>
 
     private record AndRegex(IImmutableList<Regex> Children) : NaryRegex(Children)
     {
-        public override string ToString() => $"({string.Join(" & ", Children.Select(child => child.ToString()))})";
+        public override string ToString() => $"({string.Concat(Children.Select(child => child.ToString()))})";
 
         public override (State state, Result result) Apply(State state)
         {
