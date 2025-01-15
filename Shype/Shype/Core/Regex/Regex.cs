@@ -212,4 +212,30 @@ public abstract record Regex : Errors.Errorable<Regex>
     public static Regex And(params Regex[] children) => new AndRegex(children.ToImmutableList());
 
     public static Regex operator &(Regex lhs, Regex rhs) => And(lhs, rhs);
+
+    private record OrRegex(IImmutableList<Regex> Children) : NaryRegex(Children)
+    {
+        public override string ToString() => $"({string.Join("|", this.Select(child => child.ToString()))})";
+
+        public override (State state, Result result) Apply(State state)
+        {
+            List<Errors.Error> errors = [];
+            foreach (Regex child in this)
+            {
+                try
+                {
+                    return child.Apply(state);
+                }
+                catch (Errors.Error error)
+                {
+                    errors.Add(error);
+                }
+            }
+            throw CreateError("", [.. errors]);
+        }
+    }
+
+    public static Regex Or(params Regex[] children) => new OrRegex(children.ToImmutableList());
+
+    public static Regex operator |(Regex lhs, Regex rhs) => Or(lhs, rhs);
 }
