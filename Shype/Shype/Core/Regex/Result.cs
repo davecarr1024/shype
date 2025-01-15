@@ -4,9 +4,11 @@ namespace Shype.Core.Regex;
 public record Result(Chars.Stream Chars)
     : Errors.Errorable<Result>, IEnumerable<Chars.Char>
 {
-    public Result(params Chars.Char[] chars) : this(new Chars.Stream(chars.ToImmutableList())) { }
+    public Result(params Chars.Char[] chars) 
+        : this(new Chars.Stream(chars)) { }
 
-    public Result(string input, Chars.Position? position = null) : this(new Chars.Stream(input, position)) { }
+    public Result(string input, Chars.Position? position = null) 
+        : this(new Chars.Stream(input, position)) { }
 
     public string Value() => Chars.Value();
 

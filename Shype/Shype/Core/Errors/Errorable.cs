@@ -2,8 +2,8 @@ namespace Shype.Core.Errors;
 
 public abstract record Errorable<E> where E : Errorable<E>
 {
-    public class Error(Errorable<E> obj, IImmutableList<Error> Children, string message = "")
-        : Errors.Error(Children.ToImmutableList<Errors.Error>(), message)
+    public class Error(Errorable<E> obj, IImmutableList<Errors.Error> Children, string message = "")
+        : Errors.Error(Children, message)
     {
         public Errorable<E> Object { get; init; } = obj;
 
@@ -15,7 +15,7 @@ public abstract record Errorable<E> where E : Errorable<E>
         protected override string ToStringLine() => $"{Object}: {base.ToStringLine()}";
     }
 
-    protected Error CreateError(string message = "", params Error[] children)
+    protected Error CreateError(string message = "", params Errors.Error[] children)
         => new(this, children.ToImmutableList(), message);
 
     protected T Try<T>(Func<T> func, string message = "")
@@ -24,7 +24,7 @@ public abstract record Errorable<E> where E : Errorable<E>
         {
             return func();
         }
-        catch (Error error)
+        catch (Errors.Error error)
         {
             throw CreateError(message, error);
         }

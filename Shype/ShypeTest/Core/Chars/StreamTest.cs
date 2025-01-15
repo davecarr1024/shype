@@ -8,19 +8,19 @@ public class StreamTest
     {
         Assert.AreEqual(new Stream(), new Stream());
         Assert.AreEqual(
-            new Stream(new Char('a', new(0, 0))),
-            new Stream(new Char('a', new(0, 0)))
+            new Stream(new Char('a')),
+            new Stream(new Char('a'))
         );
         Assert.AreNotEqual(
             new Stream(),
-            new Stream(new Char('a', new(0, 0)))
+            new Stream(new Char('a'))
         );
         Assert.AreNotEqual(
-            new Stream(new Char('a', new(0, 0))),
-            new Stream(new Char('b', new(0, 0)))
+            new Stream(new Char('a')),
+            new Stream(new Char('b'))
         );
         Assert.AreNotEqual(
-            new Stream(new Char('a', new(0, 0))),
+            new Stream(new Char('a')),
             new Stream(new Char('a', new(1, 2)))
         );
     }
@@ -34,7 +34,7 @@ public class StreamTest
         );
         Assert.AreEqual(
             new Stream(
-                new Char('a', new(0, 0)),
+                new Char('a'),
                 new Char('\n', new(0, 1)),
                 new Char('b', new(1, 0))
             ),
@@ -62,8 +62,8 @@ public class StreamTest
     {
         Assert.ThrowsException<Stream.Error>(new Stream().Head);
         Assert.AreEqual(
-            new Char('a', new(0, 0)),
-            new Stream(new Char('a', new(0, 0))).Head()
+            new Char('a'),
+            new Stream(new Char('a')).Head()
         );
     }
 
@@ -73,12 +73,12 @@ public class StreamTest
         Assert.ThrowsException<Stream.Error>(new Stream().Tail);
         Assert.AreEqual(
             new Stream(),
-            new Stream(new Char('a', new(0, 0))).Tail()
+            new Stream(new Char('a')).Tail()
         );
         Assert.AreEqual(
             new Stream(new Char('b', new(0, 1))),
             new Stream(
-                new Char('a', new(0, 0)),
+                new Char('a'),
                 new Char('b', new(0, 1))
             ).Tail()
         );
@@ -120,7 +120,7 @@ public class StreamTest
         );
         Assert.AreEqual(
             new Stream("ab"),
-            new Char('a', new(0, 0)) + new Stream("b", new(0, 1))
+            new Char('a') + new Stream("b", new(0, 1))
         );
     }
 }
