@@ -1,15 +1,23 @@
 namespace Shype.Core.Errors;
 
 
+[TestClass]
 public class ErrorTest
 {
-    [Test]
+    [TestMethod]
     public void TestEqual()
     {
-#pragma warning disable NUnit2009
-        Assert.That(new Error("a"), Is.EqualTo(new Error("a")));
-#pragma warning restore NUnit2009
-        Assert.That(new Error("a"), Is.Not.EqualTo(new Error("b")));
+        Assert.AreEqual(
+            new Error([], "a"),
+            new Error([], "a")
+        );
+        Assert.AreNotEqual(
+            new Error([], "a"),
+            new Error([], "b")
+        );
+        Assert.AreNotEqual(
+            new Error([], "a"),
+            new Error([new Error([], "b")], "a")
+        );
     }
-
 }

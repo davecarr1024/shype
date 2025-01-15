@@ -42,14 +42,14 @@ public abstract record Regex : Errors.Errorable<Regex>
 
         public override (State state, Result result) Apply(State state)
             => (
-                state.Tail,
+                state.Tail(),
                 new Result(
-                    ImmutableList.Create(
+                    [
                         Try(
-                            () => Apply(state.Head),
-                            $"error while processing head {state.Head}"
+                            () => Apply(state.Head()),
+                            $"error while processing head {state.Head()}"
                         )
-                    )
+                    ]
                 )
             );
     }

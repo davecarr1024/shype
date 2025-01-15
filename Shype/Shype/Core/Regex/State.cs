@@ -1,13 +1,20 @@
+using System.Collections;
+
 namespace Shype.Core.Regex;
 
-public record State(IImmutableList<Chars.Char> Chars) : Chars.Stream<State>(Chars)
+public record State(Chars.Stream Chars)
+    : Errors.Errorable<State>, IEnumerable<Chars.Char>
 {
-    public State()
-        : this(ImmutableList<Chars.Char>.Empty) { }
-
-    public State(params Chars.Char[] chars)
-        : this(chars.ToImmutableList()) { }
+    public State(params Chars.Char[] chars) : this(new Chars.Stream(chars.ToImmutableList())) { }
 
     public State(string input, Chars.Position? position = null)
-        : this(FromString(input, position)) { }
+        : this(new Chars.Stream(input, position)) { }
+
+    public IEnumerator<Chars.Char> GetEnumerator() => Chars.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Chars).GetEnumerator();
+
+    public Chars.Char Head() => Try(Chars.Head);
+
+    public State Tail() => new(Try(Chars.Tail));
 }

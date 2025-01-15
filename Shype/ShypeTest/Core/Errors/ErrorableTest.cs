@@ -1,5 +1,6 @@
 namespace Shype.Core.Errors;
 
+[TestClass]
 public class ErrorableTest
 {
     private record PositiveInt : Errorable<PositiveInt>
@@ -27,29 +28,32 @@ public class ErrorableTest
         }
     }
 
-    [Test]
+    [TestMethod]
     public void TestCtor()
     {
-        new PositiveInt(0);
-        new PositiveInt(1);
-        Assert.Catch<Error>(() => { new PositiveInt(-1); });
+        var _ = new PositiveInt(0);
+        _ = new PositiveInt(1);
+        Assert.ThrowsException<PositiveInt.Error>(() => new PositiveInt(-1));
     }
 
-    [Test]
+    [TestMethod]
     public void TestSetterThrows()
     {
         PositiveInt i = new();
-        Assert.That(
-            Assert.Catch<Error>(() => { i.Value = -1; }),
-            Is.EqualTo(new Error("negative value"))
+        Assert.AreEqual(
+            new PositiveInt.Error(i, [], "negative value"),
+            Assert.ThrowsException<PositiveInt.Error>(() => { i.Value = -1; })
         );
     }
 
-    [Test]
+    [TestMethod]
     public void TestTry()
     {
         PositiveInt i = new();
-        Assert.That(i.SetAndGet(1), Is.EqualTo(1));
-        Assert.Catch<Error>(() => { i.SetAndGet(-1); });
+        Assert.AreEqual(1, i.SetAndGet(1));
+        Assert.AreEqual(
+            new PositiveInt.Error(i, [new PositiveInt.Error(i, [], "negative value")]),
+            Assert.ThrowsException<PositiveInt.Error>(() => i.SetAndGet(-1))
+        );
     }
 }
