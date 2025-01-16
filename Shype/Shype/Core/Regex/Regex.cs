@@ -5,7 +5,8 @@ namespace Shype.Core.Regex;
 
 public abstract record Regex : Errors.Errorable<Regex>
 {
-    public static Regex Create(string pattern) => throw new NotImplementedException();
+    public static Regex Create(string input)
+        => And([.. input.Select(Literal)]);
 
     public (State state, Result result) Apply(string input, Chars.Position? position = null)
         => Apply(new(input, position));
@@ -184,6 +185,10 @@ public abstract record Regex : Errors.Errorable<Regex>
         public IEnumerator<Regex> GetEnumerator() => Children.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Children).GetEnumerator();
+
+        public virtual bool Equals(NaryRegex? rhs) => rhs is not null && Children.SequenceEqual(rhs.Children);
+
+        public override int GetHashCode() => Children.GetHashCode();
 
         protected (State state, Result result) ApplyChild(Regex child, State state)
         {

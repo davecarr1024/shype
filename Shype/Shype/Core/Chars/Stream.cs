@@ -20,10 +20,6 @@ public record Stream(IImmutableList<Char> Items)
         return [.. chars];
     }
 
-    public virtual bool Equals(Stream? rhs) => base.Equals(rhs);
-
-    public override int GetHashCode() => base.GetHashCode();
-
     public override string ToString() => base.ToString();
 
     public Position Position() => Head().Position;
