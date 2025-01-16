@@ -5,6 +5,8 @@ namespace Shype.Core.Regex;
 
 public abstract record Regex : Errors.Errorable<Regex>
 {
+    public static Regex Create(string pattern) => throw new NotImplementedException();
+
     public (State state, Result result) Apply(string input, Chars.Position? position = null)
         => Apply(new(input, position));
 

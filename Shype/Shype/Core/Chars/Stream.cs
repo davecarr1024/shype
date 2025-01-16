@@ -1,7 +1,7 @@
 namespace Shype.Core.Chars;
 
-public record Stream(IImmutableList<Char> Chars)
-    : Errors.Errorable<Stream>, IEnumerable<Char>
+public record Stream(IImmutableList<Char> Items)
+    : Streams.Stream<Stream, Char>(Items)
 {
     public Stream(params Char[] chars) : this(chars.ToImmutableList()) { }
 
@@ -20,47 +20,13 @@ public record Stream(IImmutableList<Char> Chars)
         return [.. chars];
     }
 
-    public virtual bool Equals(Stream? rhs)
-        => rhs is not null && Chars.SequenceEqual(rhs.Chars);
+    public virtual bool Equals(Stream? rhs) => base.Equals(rhs);
 
-    public override int GetHashCode() => Chars.GetHashCode();
+    public override int GetHashCode() => base.GetHashCode();
 
-    public override string ToString()
-        => $"[{string.Join(", ", this.Select(c => c.ToString()))}]";
-
-    public bool Empty() => !this.Any();
-
-    private void AssertNotEmpty()
-    {
-        if (Empty())
-        {
-            throw CreateError("empty stream");
-        }
-    }
-
-    public Char Head()
-    {
-        AssertNotEmpty();
-        return this.First();
-    }
-
-    public Stream Tail()
-    {
-        AssertNotEmpty();
-        return this with { Chars = Chars.Skip(1).ToImmutableList() };
-    }
+    public override string ToString() => base.ToString();
 
     public Position Position() => Head().Position;
 
     public string Value() => string.Concat(this.Select(c => c.Value));
-
-    public IEnumerator<Char> GetEnumerator() => Chars.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Chars).GetEnumerator();
-
-    public static Stream operator +(Stream lhs, Stream rhs) => new((IImmutableList<Char>)[.. lhs, .. rhs]);
-
-    public static Stream operator +(Stream lhs, Char rhs) => new((IImmutableList<Char>)[.. lhs, rhs]);
-
-    public static Stream operator +(Char lhs, Stream rhs) => new((IImmutableList<Char>)[lhs, .. rhs]);
 }
