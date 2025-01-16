@@ -8,16 +8,16 @@ public class ErrorTest
     public void TestEqual()
     {
         Assert.AreEqual(
-            new Error([], "a"),
-            new Error([], "a")
+            new Error("a"),
+            new Error("a")
         );
         Assert.AreNotEqual(
-            new Error([], "a"),
-            new Error([], "b")
+            new Error("a"),
+            new Error("b")
         );
         Assert.AreNotEqual(
-            new Error([], "a"),
-            new Error([new Error([], "b")], "a")
+            new Error("a"),
+            new Error("a", new Error("b"))
         );
     }
 }

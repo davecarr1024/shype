@@ -41,7 +41,7 @@ public class ErrorableTest
     {
         PositiveInt i = new();
         Assert.AreEqual(
-            new PositiveInt.Error(i, [], "negative value"),
+            new PositiveInt.Error(i, "negative value"),
             Assert.ThrowsException<PositiveInt.Error>(() => { i.Value = -1; })
         );
     }
@@ -52,7 +52,7 @@ public class ErrorableTest
         PositiveInt i = new();
         Assert.AreEqual(1, i.SetAndGet(1));
         Assert.AreEqual(
-            new PositiveInt.Error(i, [new PositiveInt.Error(i, [], "negative value")]),
+            new PositiveInt.Error(i, "", new PositiveInt.Error(i, "negative value")),
             Assert.ThrowsException<PositiveInt.Error>(() => i.SetAndGet(-1))
         );
     }

@@ -50,12 +50,15 @@ public record Lexer(IImmutableList<Rule> Rules)
     public Result Apply(string input, Chars.Position? position = null)
         => Apply(new(input, position));
 
+    public static Lexer Merge(params Lexer[] lexers)
+        => new(lexers.Aggregate([], (Lexer lhs, Lexer rhs) => new(lhs.Union(rhs).ToImmutableList())));
+
     public static Lexer operator +(Lexer lhs, Lexer rhs)
-        => lhs with { Rules = [.. lhs, .. rhs] };
+        => Merge(lhs, rhs);
 
     public static Lexer operator +(Lexer lhs, Rule rhs)
-        => lhs with { Rules = [.. lhs, rhs] };
+        => Merge(lhs, new(rhs));
 
     public static Lexer operator +(Rule lhs, Lexer rhs)
-        => rhs with { Rules = [lhs, .. rhs] };
+        => Merge(new(lhs), rhs);
 }
