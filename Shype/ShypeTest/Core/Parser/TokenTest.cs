@@ -43,4 +43,24 @@ public class TokenTest
         );
     }
 
+    [TestMethod]
+    public void TestToString()
+    {
+        Assert.AreEqual(
+            "'a'",
+            Parser.Token("a").ToString()
+        );
+        Assert.AreEqual(
+            "r",
+            Parser.Token("r", "a").ToString()
+        );
+        Assert.AreEqual(
+            "r",
+            Parser.Token("r", Regex.Regex.Create("a")).ToString()
+        );
+        Assert.AreEqual(
+            "r",
+            Parser.Token(new Lexer.Rule("r", "a")).ToString()
+        );
+    }
 }

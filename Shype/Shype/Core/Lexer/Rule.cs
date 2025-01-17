@@ -19,9 +19,9 @@ public record Rule(string Name, Regex.Regex Regex, bool Include = true)
     public override string ToString() =>
         (Name, Regex, Include) switch
         {
-            (_, _, true) when Name == Regex.ToString() => Name,
-            (_, _, false) when Name == Regex.ToString() => $"~{Name}",
-            (_, _, false) => $"~{Name}({Regex})",
-            (_, _, true) => $"{Name}({Regex})",
+            (_, _, true) when Name == Regex.ToString() => $"'{Name}'",
+            (_, _, false) when Name == Regex.ToString() => $"~'{Name}'",
+            (_, _, false) => $"~{Name}",
+            (_, _, true) => $"{Name}",
         };
 }

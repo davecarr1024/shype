@@ -4,6 +4,8 @@ namespace Shype.Core.Parser;
 public record Suffix<Result>(Parser<Result> Child, Parser Value)
     : Parser<Result>
 {
+    public override string ToString() => $"({Child} & {Value})";
+
     public override (State state, Result result) Apply(State state)
     {
         (state, Result result) = Try(() => Child.Apply(state));

@@ -20,4 +20,25 @@ public class RuleTest
             new Rule("r", "a").Apply("a", new(1, 2))
         );
     }
+
+    [TestMethod]
+    public void TestToString()
+    {
+        Assert.AreEqual(
+            "'a'",
+            new Rule("a", "a").ToString()
+        );
+        Assert.AreEqual(
+            "~'a'",
+            new Rule("a", "a", false).ToString()
+        );
+        Assert.AreEqual(
+            "r",
+            new Rule("r", "a").ToString()
+        );
+        Assert.AreEqual(
+            "~r",
+            new Rule("r", "a", false).ToString()
+        );
+    }
 }
