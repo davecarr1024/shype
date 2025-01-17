@@ -17,6 +17,6 @@ public abstract record Transformer<Result, ChildResult>(Parser<ChildResult> Chil
         protected override Result Apply(ChildResult result) => Func(result);
     }
 
-    public static Transformer<Result, ChildResult> Create(Parser<ChildResult> child, Func<ChildResult, Result> func) 
+    public static Transformer<Result, ChildResult> Create(Parser<ChildResult> child, Func<ChildResult, Result> func)
         => new FuncTransformer(child, func);
 }

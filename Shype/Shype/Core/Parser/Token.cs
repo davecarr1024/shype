@@ -16,4 +16,5 @@ public record Token(Lexer.Rule LexRule) : Head<Tokens.Token>
     public Parser<string> Value() => Transform(token => token.Value);
 
     public override Lexer.Lexer Lexer() => new(LexRule);
+
 }
