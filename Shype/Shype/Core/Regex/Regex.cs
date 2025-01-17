@@ -1,7 +1,5 @@
 namespace Shype.Core.Regex;
 
-
-
 public abstract record Regex : Errors.Errorable<Regex>
 {
     public static Regex Create(string input)
