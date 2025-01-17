@@ -1,0 +1,23 @@
+namespace Shype.Core.Regex;
+
+public record Or(IImmutableList<Regex> Children) : NaryRegex(Children)
+{
+    internal override string ToString(bool first) => ToString(first, "|");
+
+    public override (State state, Result result) Apply(State state)
+    {
+        List<Errors.Error> errors = [];
+        foreach (Regex child in this)
+        {
+            try
+            {
+                return child.Apply(state);
+            }
+            catch (Errors.Error error)
+            {
+                errors.Add(error);
+            }
+        }
+        throw CreateError("", [.. errors]);
+    }
+}
