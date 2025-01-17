@@ -17,4 +17,5 @@ public record Token(Lexer.Rule LexRule) : Head<Tokens.Token>
 
     public override Lexer.Lexer Lexer() => new(LexRule);
 
+    public override string ToString() => LexRule.ToString();
 }

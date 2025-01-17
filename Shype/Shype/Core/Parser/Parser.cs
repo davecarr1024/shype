@@ -48,4 +48,8 @@ public abstract record Parser<Result> : Parser
 
     public static Suffix<Result> operator &(Parser<Result> lhs, string rhs)
         => new(lhs, Token(rhs));
+
+    public static Or<Result> operator |(Parser<Result> lhs, Parser<Result> rhs)
+        => new([lhs, rhs]);
+
 }
