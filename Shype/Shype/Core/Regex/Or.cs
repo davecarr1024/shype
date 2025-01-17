@@ -2,6 +2,8 @@ namespace Shype.Core.Regex;
 
 public record Or(IImmutableList<Regex> Children) : NaryRegex(Children)
 {
+    public override string ToString() => base.ToString();
+
     internal override string ToString(bool first) => ToString(first, "|");
 
     public override (State state, Result result) Apply(State state)
@@ -20,4 +22,13 @@ public record Or(IImmutableList<Regex> Children) : NaryRegex(Children)
         }
         throw CreateError("", [.. errors]);
     }
+
+    public static Or operator |(Or lhs, Regex rhs)
+        => new([.. lhs, rhs]);
+
+    public static Or operator |(Regex lhs, Or rhs)
+        => new([lhs, .. rhs]);
+
+    public static Or operator |(Or lhs, Or rhs)
+        => new([.. lhs, .. rhs]);
 }

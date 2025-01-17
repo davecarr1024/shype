@@ -4,7 +4,7 @@ namespace Shype.Core.Regex;
 public class RangeTest
 {
     [TestMethod]
-    public void TestRange()
+    public void TestApply()
     {
         Regex regex = Regex.Range('a', 'z');
         Assert.ThrowsException<Regex.Error>(() => regex.Apply(""));
@@ -24,6 +24,15 @@ public class RangeTest
         Assert.AreEqual(
             (new State("b", new(0, 1)), new Result("a")),
             regex.Apply("ab")
+        );
+    }
+
+    [TestMethod]
+    public void TestToString()
+    {
+        Assert.AreEqual(
+            "[a-z]",
+            Regex.Range('a', 'z').ToString()
         );
     }
 }

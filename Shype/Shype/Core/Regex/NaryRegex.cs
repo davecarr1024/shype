@@ -19,10 +19,12 @@ public abstract record NaryRegex(IImmutableList<Regex> Children) : Regex, IEnume
         return Try(() => child.Apply(state), $"error while applying to child {child}");
     }
 
+    public override string ToString() => base.ToString();
+
     protected string ToString(bool first, string separator)
         => first switch
         {
             true => string.Join(separator, this.Select(child => child.ToString(false))),
-            false => $"({ToString(false)})",
+            false => $"({ToString(true, separator)})",
         };
 }

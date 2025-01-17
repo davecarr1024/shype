@@ -15,5 +15,11 @@ public class NotTest
             regex.Apply("b")
         );
     }
+
+    [TestMethod]
+    public void TestToString()
+    {
+        Assert.AreEqual("^a", Regex.Literal('a').Not().ToString());
+    }
 }
 

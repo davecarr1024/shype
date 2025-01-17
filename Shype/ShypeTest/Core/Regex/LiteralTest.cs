@@ -12,5 +12,11 @@ public class LiteralTest
             Regex.Literal('a').Apply("a")
         );
     }
+
+    [TestMethod]
+    public void TestToString()
+    {
+        Assert.AreEqual("a", Regex.Literal('a').ToString());
+    }
 }
 

@@ -47,7 +47,7 @@ public abstract record Regex : Errors.Errorable<Regex>
             _ => new And([.. children]),
         };
 
-    public static Regex operator &(Regex lhs, Regex rhs) => And(lhs, rhs);
+    public static And operator &(Regex lhs, Regex rhs) => new([lhs, rhs]);
 
     public static Regex Or(params Regex[] children)
         => children.Length switch
@@ -56,5 +56,5 @@ public abstract record Regex : Errors.Errorable<Regex>
             _ => new Or([.. children]),
         };
 
-    public static Regex operator |(Regex lhs, Regex rhs) => Or(lhs, rhs);
+    public static Or operator |(Regex lhs, Regex rhs) => new([lhs, rhs]);
 }

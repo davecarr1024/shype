@@ -32,5 +32,14 @@ public class ZeroOrMoreTest
             Regex.Literal('a').ZeroOrMore().Apply("aa")
         );
     }
+
+    [TestMethod]
+    public void TestToString()
+    {
+        Assert.AreEqual(
+            "a*",
+            Regex.Literal('a').ZeroOrMore().ToString()
+        );
+    }
 }
 
