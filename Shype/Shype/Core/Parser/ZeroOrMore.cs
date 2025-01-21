@@ -1,7 +1,7 @@
 namespace Shype.Core.Parser;
 
 public record ZeroOrMore<Result>(Parser<Result> Child)
-    : UnaryParser<IImmutableList<Result>, Result>(Child)
+    : Unary<IImmutableList<Result>, Result>(Child)
 {
     public override (State state, IImmutableList<Result> result) Apply(State state)
     {

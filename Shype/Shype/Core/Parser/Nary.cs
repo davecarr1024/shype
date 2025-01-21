@@ -2,17 +2,17 @@
 
 namespace Shype.Core.Parser;
 
-public abstract record NaryParser<Result, ChildResult>(IImmutableList<Parser<ChildResult>> Children)
+public abstract record Nary<Result, ChildResult>(IImmutableList<Parser<ChildResult>> Children)
     : Parser<Result>, IEnumerable<Parser<ChildResult>>
 {
-    public NaryParser(params Parser<ChildResult>[] children)
+    public Nary(params Parser<ChildResult>[] children)
         : this(children.ToImmutableList()) { }
 
     public IEnumerator<Parser<ChildResult>> GetEnumerator() => Children.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Children).GetEnumerator();
 
-    public virtual bool Equals(NaryParser<Result, ChildResult>? rhs)
+    public virtual bool Equals(Nary<Result, ChildResult>? rhs)
         => rhs is not null && Children.SequenceEqual(rhs.Children);
 
     public override int GetHashCode() => Children.GetHashCode();

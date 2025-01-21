@@ -2,8 +2,6 @@ namespace Shype.Core.Regex;
 
 public abstract record HeadRegex : Regex
 {
-    public override string ToString() => base.ToString();
-
     public abstract Chars.Char Apply(Chars.Char head);
 
     protected Chars.Char Head(State state) => Try(state.Head, "empty state");

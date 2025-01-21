@@ -1,9 +1,7 @@
 namespace Shype.Core.Regex;
 
-public record And(IImmutableList<Regex> Children) : NaryRegex(Children)
+public record And(IImmutableList<Regex> Children) : Nary(Children)
 {
-    public override string ToString() => base.ToString();
-
     internal override string ToString(bool first) => ToString(first, "");
 
     public override (State state, Result result) Apply(State state)

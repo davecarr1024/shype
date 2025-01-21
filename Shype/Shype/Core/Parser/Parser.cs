@@ -33,8 +33,8 @@ public abstract record Parser<Result> : Parser
 
     public ZeroOrMore<Result> ZeroOrMore() => new(this);
 
-    public Transformer<T, Result> Transform<T>(Func<Result, T> func)
-        => Transformer<T, Result>.Create(this, func);
+    public Transform<T, Result> Transform<T>(Func<Result, T> func)
+        => Transform<T, Result>.Create(this, func);
 
     public Prefix<Result> Prefix(Parser value) => new(this, value);
 

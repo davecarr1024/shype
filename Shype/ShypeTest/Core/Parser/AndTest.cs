@@ -26,21 +26,34 @@ public class AndTest
     [TestMethod]
     public void TestCombine()
     {
+        Token a = Parser.Token("a"),
+            b = Parser.Token("b"),
+            c = Parser.Token("c"),
+            d = Parser.Token("d");
         Assert.AreEqual(
             new And<Tokens.Token>([
-                Parser.Token("a"),
-                Parser.Token("b"),
-                Parser.Token("c")
+                a,
+                b,
+                c
             ]),
-            Parser.Token("a") & Parser.Token("b") & Parser.Token("c")
+            a & b & c
         );
         Assert.AreEqual(
             new And<Tokens.Token>([
-                Parser.Token("a"),
-                Parser.Token("b"),
-                Parser.Token("c")
+                a,
+                b,
+                c
             ]),
-            Parser.Token("a") & (Parser.Token("b") & Parser.Token("c"))
+            a & (b & c)
+        );
+        Assert.AreEqual(
+            new And<Tokens.Token>([
+                a,
+                b,
+                c,
+                d
+            ]),
+            a & b & (c & d)
         );
     }
 }

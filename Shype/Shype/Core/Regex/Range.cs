@@ -2,8 +2,6 @@ namespace Shype.Core.Regex;
 
 public record Range(char Min, char Max) : HeadRegex
 {
-    public override string ToString() => base.ToString();
-
     internal override string ToString(bool first) => $"[{Min}-{Max}]";
 
     public override Chars.Char Apply(Chars.Char head)

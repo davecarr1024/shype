@@ -10,7 +10,7 @@ public abstract record Regex : Errors.Errorable<Regex>
 
     public abstract (State state, Result result) Apply(State state);
 
-    public override string ToString() => ToString(true);
+    public sealed override string ToString() => ToString(true);
 
     internal abstract string ToString(bool first);
 

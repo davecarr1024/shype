@@ -1,7 +1,7 @@
 namespace Shype.Core.Parser;
 
 public record And<Result>(IImmutableList<Parser<Result>> Children)
-    : NaryParser<IImmutableList<Result>, Result>(Children)
+    : Nary<IImmutableList<Result>, Result>(Children)
 {
     public override string ToString()
         => $"({string.Join(" & ", from child in this select child.ToString())})";
@@ -22,4 +22,8 @@ public record And<Result>(IImmutableList<Parser<Result>> Children)
 
     public static And<Result> operator &(Parser<Result> lhs, And<Result> rhs)
         => new([lhs, .. rhs]);
+
+    public static And<Result> operator &(And<Result> lhs, And<Result> rhs)
+        => new([.. lhs, .. rhs]);
+
 }

@@ -1,7 +1,7 @@
 namespace Shype.Core.Parser;
 
 public record Or<Result>(IImmutableList<Parser<Result>> Children)
-    : NaryParser<Result, Result>(Children)
+    : Nary<Result, Result>(Children)
 {
     public override string ToString()
         => $"({string.Join(" | ", from child in this select child.ToString())})";
