@@ -28,4 +28,7 @@ public record Or<Result>(IImmutableList<Parser<Result>> Children)
 
     public static Or<Result> operator |(Parser<Result> lhs, Or<Result> rhs)
         => new([lhs, .. rhs]);
+
+    public static Or<Result> operator |(Or<Result> lhs, Or<Result> rhs)
+        => new([.. lhs, .. rhs]);
 }
