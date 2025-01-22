@@ -46,6 +46,15 @@ public abstract record Parser<Result> : Parser
 
     public Suffix<Result> Suffix(Parser value) => new(this, value);
 
+    public WithLexer<Result> WithLexer(Lexer.Lexer value)
+        => new(this, value);
+
+    public WithLexer<Result> WithLexer(Lexer.Rule rule)
+        => WithLexer(new Lexer.Lexer(rule));
+
+    public WithLexer<Result> IgnoreWhitespace()
+        => WithLexer(new Lexer.Rule("ws", Regex.Regex.Whitespace().OneOrMore(), false));
+
     public Arg<O> Arg<O>(Func<O, Result, O> setter)
         => new Arg<O, Result>(this, setter);
 
