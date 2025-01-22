@@ -2,16 +2,16 @@
 namespace Shype.Core.Parser;
 
 public record Suffix<Result>(Parser<Result> Child, Parser Value)
-    : Parser<Result>
+    : Unary<Result, Result>(Child)
 {
     public override string ToString() => $"({Child} & {Value})";
 
     public override (State state, Result result) Apply(State state)
     {
-        (state, Result result) = Try(() => Child.Apply(state));
-        state = Try(() => Value.ApplyState(state));
+        (state, Result result) = ApplyChild(state);
+        state = Apply(Value, state);
         return (state, result);
     }
 
-    public override Lexer.Lexer Lexer() => Value.Lexer() + Child.Lexer();
+    public override Lexer.Lexer Lexer() => Value.Lexer() + base.Lexer();
 }

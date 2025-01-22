@@ -19,13 +19,45 @@ public class ArgTest
     {
         Arg<Int> i =
             Parser
-                .Token("i", Regex.Regex.Digits())
+                .Token("int", Regex.Regex.Digits())
                 .Value()
                 .Transform(int.Parse)
                 .Arg((Int obj, int value) => obj with { Value = value });
         Assert.AreEqual(
             new Int(1),
             i.Apply("1").result.Apply(new())
+        );
+    }
+
+    [TestMethod]
+    public void TestPrefix()
+    {
+        Assert.AreEqual(
+            new Int(1),
+            (
+                "(" &
+                Parser
+                    .Token("int", Regex.Regex.Digits())
+                    .Value()
+                    .Transform(int.Parse)
+                    .Arg((Int obj, int value) => obj with { Value = value })
+            ).Apply("(1").result.Apply(new())
+        );
+    }
+
+    [TestMethod]
+    public void TestSuffix()
+    {
+        Assert.AreEqual(
+            new Int(1),
+            (
+                Parser
+                    .Token("int", Regex.Regex.Digits())
+                    .Value()
+                    .Transform(int.Parse)
+                    .Arg((Int obj, int value) => obj with { Value = value })
+                & ")"
+            ).Apply("1)").result.Apply(new())
         );
     }
 }

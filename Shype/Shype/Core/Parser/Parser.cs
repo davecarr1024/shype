@@ -16,6 +16,9 @@ public abstract record Parser : Errors.Errorable<Parser>
     public static Token Token(string name, string value) => Token(name, Regex.Regex.Create(value));
 
     public static Token Token(string value) => Token(value, value);
+
+    protected State Apply(Parser parser, State state)
+        => Try(() => parser.ApplyState(state));
 }
 
 public abstract record Parser<Result> : Parser
@@ -27,6 +30,9 @@ public abstract record Parser<Result> : Parser
     }
 
     public abstract (State state, Result result) Apply(State state);
+
+    protected (State state, ChildResult child_result) Apply<ChildResult>(Parser<ChildResult> parser, State state)
+        => Try(() => parser.Apply(state));
 
     public (State state, Result result) Apply(string input, Chars.Position? position = null)
         => Apply(ApplyLexer(input, position));

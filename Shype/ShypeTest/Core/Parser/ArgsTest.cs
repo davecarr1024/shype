@@ -40,10 +40,17 @@ public class ArgsTest
             new Args<Obj>([a, b, c, d]),
             a & (b & c) & d
         );
-        Args<Obj> args = "(" & a;
         Assert.AreEqual(
             new Args<Obj>([a, b, c, d]),
-            "(" & a & b & (c & d) & ")"
+            a & b & (c & d)
+        );
+        Assert.AreEqual(
+            new Args<Obj>([a, b, c, d]),
+            "(" & (a & b & c & d)
+        );
+        Assert.AreEqual(
+            new Args<Obj>([a, b, c, d]),
+            a & b & c & d & ")"
         );
     }
 }
