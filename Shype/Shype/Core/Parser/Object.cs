@@ -1,19 +1,35 @@
 
+
 namespace Shype.Core.Parser;
 
-public record Object<O>(IImmutableList<Arg<O>> Args)
-    : Errors.Errorable<Object<O>>, IEnumerable<Arg<O>>
+public static class Object
 {
-    public O Apply(O obj)
+    public record Builder<O>(IImmutableList<Arg<O>.Setter> Setters)
+        : Errors.Errorable<Builder<O>>, IEnumerable<Arg<O>.Setter>
     {
-        foreach (Arg<O> arg in this)
+        public O Apply(O obj)
         {
-            obj = Try(() => arg.Apply(obj));
+            foreach (Arg<O>.Setter arg in this)
+            {
+                obj = Try(() => arg.Apply(obj));
+            }
+            return obj;
         }
-        return obj;
+
+        public IEnumerator<Arg<O>.Setter> GetEnumerator() => Setters.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Setters).GetEnumerator();
     }
+}
 
-    public IEnumerator<Arg<O>> GetEnumerator() => Args.GetEnumerator();
+public record Object<O>(Args<O> Args, O Obj)
+    : Parser<O>
+{
+    public override Lexer.Lexer Lexer() => Args.Lexer();
 
-    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Args).GetEnumerator();
+    public override (State state, O result) Apply(State state)
+    {
+        (state, IImmutableList<Arg<O>.Setter> setters) = Try(() => Args.Apply(state));
+        return (state, new Object.Builder<O>(setters).Apply(Obj));
+    }
 }

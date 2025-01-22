@@ -4,7 +4,7 @@ public abstract record Parser : Errors.Errorable<Parser>
 {
     public abstract State ApplyState(State state);
 
-    public virtual Lexer.Lexer Lexer() => new();
+    public abstract Lexer.Lexer Lexer();
 
     protected State ApplyLexer(string input, Chars.Position? position)
         => new(Try(() => Lexer().Apply(input, position), "lex error").Tokens);
@@ -40,18 +40,8 @@ public abstract record Parser<Result> : Parser
 
     public Suffix<Result> Suffix(Parser value) => new(this, value);
 
-    public Parser<Arg<O>> Arg<O>(Func<O, Result, O> setter)
-        => Transform<Arg<O>>(value => new Arg<O, Result>(setter, value));
-
-    public Parser<O> Object<O>(O obj)
-        => Transform(
-            value =>
-                value is IImmutableList<Arg<O>> args
-                    ? new Object<O>(args).Apply(obj)
-                    : throw CreateError($"invalid args {value}")
-        );
-
-    public Parser<O> Object<O>() where O : new() => Object<O>(new());
+    public Arg<O> Arg<O>(Func<O, Result, O> setter)
+        => new Arg<O, Result>(this, setter);
 
     public static And<Result> operator &(Parser<Result> lhs, Parser<Result> rhs)
         => new([lhs, rhs]);
