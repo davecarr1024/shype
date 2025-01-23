@@ -3,7 +3,11 @@ namespace Shype.Core.Regex;
 public abstract record Regex : Errors.Errorable<Regex>
 {
     public static Regex Create(string input)
+        // => Parser().Apply(input).result;
         => And([.. input.Select(Literal)]);
+
+    internal static Parser.Parser<Regex> Parser()
+        => Core.Regex.Literal.Parser().Transform<Regex>(regex => regex);
 
     public (State state, Result result) Apply(string input, Chars.Position? position = null)
         => Apply(new(input, position));

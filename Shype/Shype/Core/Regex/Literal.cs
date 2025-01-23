@@ -13,7 +13,7 @@ public record Literal(char Value) : HeadRegex
         return head;
     }
 
-    public static Parser.Parser<Literal> Parser()
+    internal new static Parser.Parser<Literal> Parser()
         => Core.Parser.Parser
             .Token(new Lexer.Rule("literal", Operators().Not()))
             .Value()

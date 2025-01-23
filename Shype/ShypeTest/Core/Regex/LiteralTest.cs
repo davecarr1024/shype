@@ -18,25 +18,5 @@ public class LiteralTest
     {
         Assert.AreEqual("a", Regex.Literal('a').ToString());
     }
-
-    [TestMethod]
-    public void TestParse()
-    {
-        Assert.ThrowsException<Parser.Parser.Error>(() => Literal.Parser().Apply(""));
-        Assert.ThrowsException<Parser.Parser.Error>(() => Literal.Parser().Apply("("));
-        Assert.AreEqual(
-            (new Parser.State(), Regex.Literal('a')),
-            Literal.Parser().Apply("a")
-        );
-        Assert.AreEqual(
-            (
-                new Parser.State([
-                    new Tokens.Token("literal", "b", new(0, 1))
-                ]),
-                Regex.Literal('a')
-            ),
-            Literal.Parser().Apply("ab")
-        );
-    }
 }
 

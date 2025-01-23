@@ -69,5 +69,4 @@ public abstract record Parser<Result> : Parser
 
     public static Or<Result> operator |(Parser<Result> lhs, Parser<Result> rhs)
         => new([lhs, rhs]);
-
 }
