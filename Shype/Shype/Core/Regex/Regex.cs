@@ -35,8 +35,11 @@ public abstract record Regex : Errors.Errorable<Regex>
     public static Class Digits()
         => Class([.. "0123456789"], "\\d");
 
-    public virtual Not Not()
-        => throw new NotImplementedException($"non-head regex {this} doesn't support not");
+    public Where Where(Predicate<Result> predicate)
+        => new(this, predicate);
+
+    public Where Except(IImmutableList<string> results)
+        => Where(result => !results.Contains(result.Value()));
 
     public static Regex And(params Regex[] children)
         => children.Length switch

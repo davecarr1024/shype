@@ -12,5 +12,5 @@ public abstract record HeadRegex : Regex
         return (state.Tail(), new(Try(() => Apply(head), $"error while processing head {head}")));
     }
 
-    public override Not Not() => new(this);
+    public Not Not() => new(this);
 }

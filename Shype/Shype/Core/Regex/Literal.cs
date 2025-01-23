@@ -12,4 +12,10 @@ public record Literal(char Value) : HeadRegex
         }
         return head;
     }
+
+    public static Parser.Parser<Literal> Parser()
+        => Core.Parser.Parser
+            .Token(new Lexer.Rule("literal", Any()))
+            .Value()
+            .Transform(value => Literal(value.Single()));
 }
