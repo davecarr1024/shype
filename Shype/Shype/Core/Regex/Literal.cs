@@ -15,7 +15,7 @@ public record Literal(char Value) : HeadRegex
 
     public static Parser.Parser<Literal> Parser()
         => Core.Parser.Parser
-            .Token(new Lexer.Rule("literal", Any()))
+            .Token(new Lexer.Rule("literal", Operators().Not()))
             .Value()
             .Transform(value => Literal(value.Single()));
 }

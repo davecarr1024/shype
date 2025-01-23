@@ -58,4 +58,7 @@ public abstract record Regex : Errors.Errorable<Regex>
         };
 
     public static Or operator |(Regex lhs, Regex rhs) => new([lhs, rhs]);
+
+    protected static Class Operators()
+        => Class([.. "()[]+*?^-\\"]);
 }
